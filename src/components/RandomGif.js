@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Pagecontent from './PageContent';
 
 class RandomGif extends Component {
     
@@ -12,10 +13,10 @@ class RandomGif extends Component {
         console.log("Estoy en mount")
         fetch('https://api.giphy.com/v1/gifs/trending?api_key=lsRDSlMCXAtaKlDCKeJClIreqnEk2v3v&limit=4&rating=g')
         .then(response => response.json)
-        .then(data => {this.setState({gif: data.images.original.url})})
+        .then(data => {this.setState({gif: data})})
         .catch(error => {console.log(error)})
     }
-
+    
     componentDidUpdate(){
         console.log("Estoy en update")
     }
@@ -25,10 +26,15 @@ class RandomGif extends Component {
         if(this.state.gif === ""){
             contenido = <h3>Cargando...</h3>
         }else{
-            contenido = <img src={this.state.gif} alt={this.state.gif}></img>
+            contenido = <div className="row text-center">
+                {this.state.data.gif.data.map((gif, i) => (
+                    <Pagecontent key={gif.title +i} gif={gif.images} title={gif.title}/>
+                ))}
+            </div>
+            console.log(contenido)
         }
         return (
-        <div>
+        <div className="container">
             {contenido}
         </div>)
     }
